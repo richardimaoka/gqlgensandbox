@@ -11,7 +11,11 @@ import (
 // *sql.DB       -> |Middleware| -> Func
 //  http.Handler -> |   Func   | -> http.Handler
 
-func Middleware(db *sql.DB) func(http.Handler) http.Handler {
+type Func func(http.Handler) http.Handler
+
+func Middleware(db *sql.DB) Func {
+
+	// definition of a function in Func type
 	return func(next http.Handler) http.Handler {
 		return nil
 	}
