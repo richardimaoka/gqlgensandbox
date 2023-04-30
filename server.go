@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	firebase "firebase.google.com/go/v4"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/richardimaoka/gqlgensandbox/graph"
@@ -29,6 +31,11 @@ func Middleware(graphQLHandler http.Handler) http.Handler {
 }
 
 func main() {
+	/*app*/ _, err := firebase.NewApp(context.Background(), nil)
+	if err != nil {
+		log.Fatalf("error initializing app: %v\n", err)
+	}
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
