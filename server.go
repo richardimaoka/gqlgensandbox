@@ -14,13 +14,17 @@ import (
 const defaultPort = "8080"
 
 // receive http.Handler and return http.Handler
-func Middleware(h http.Handler) http.Handler {
+func Middleware(graphQLHandler http.Handler) http.Handler {
 	// using http.HandlerFunc, you can create http.Handler from a function
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorization := r.Header.Get("Authorization")
 		fmt.Println("Authorization: ", authorization)
 
-		h.ServeHTTP(w, r)
+		if authorization == "" {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+		} else {
+			graphQLHandler.ServeHTTP(w, r)
+		}
 	})
 }
 
@@ -33,7 +37,7 @@ func main() {
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
 	http.Handle("/", Middleware(playground.Handler("GraphQL playground", "/query")))
-	http.Handle("/query", srv)
+	http.Handle("/query", Middleware(srv))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
