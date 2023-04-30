@@ -17,6 +17,11 @@ func Middleware(db *sql.DB) Func {
 
 	// definition of a function in Func type
 	return func(next http.Handler) http.Handler {
-		return nil
+
+		// Func's return type is http.Handler
+		// using http.HandlerFunc, you can create http.Handler from a function
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			next.ServeHTTP(w, r)
+		})
 	}
 }
