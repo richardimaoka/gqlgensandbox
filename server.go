@@ -18,9 +18,9 @@ func Middleware(graphQLHandler http.Handler) http.Handler {
 	// using http.HandlerFunc, you can create http.Handler from a function
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorization := r.Header.Get("Authorization")
-		fmt.Println("Authorization: ", authorization)
+		fmt.Printf("Authorization: `%s`\n", authorization)
 
-		if authorization == "" {
+		if authorization != "correct token" {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 		} else {
 			graphQLHandler.ServeHTTP(w, r)
