@@ -3,6 +3,7 @@ module github.com/richardimaoka/gqlgensandbox
 go 1.18
 
 require (
+	firebase.google.com/go/v4 v4.11.0
 	github.com/99designs/gqlgen v0.17.30
 	github.com/vektah/gqlparser/v2 v2.5.1
 )
@@ -15,7 +16,6 @@ require (
 	cloud.google.com/go/iam v0.13.0 // indirect
 	cloud.google.com/go/longrunning v0.4.1 // indirect
 	cloud.google.com/go/storage v1.30.1 // indirect
-	firebase.google.com/go/v4 v4.11.0 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
