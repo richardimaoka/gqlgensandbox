@@ -45,10 +45,11 @@ func main() {
 
 	if os.Getenv("AUTH_NEEDED") == "true" {
 		http.Handle("/", Middleware(playground.Handler("GraphQL playground", "/query")))
+		http.Handle("/query", Middleware(srv))
 	} else {
 		http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+		http.Handle("/query", srv)
 	}
-	http.Handle("/query", Middleware(srv))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
