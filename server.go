@@ -43,7 +43,11 @@ func main() {
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	http.Handle("/", Middleware(playground.Handler("GraphQL playground", "/query")))
+	if os.Getenv("AUTH_NEEDED") == "true" {
+		http.Handle("/", Middleware(playground.Handler("GraphQL playground", "/query")))
+	} else {
+		http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	}
 	http.Handle("/query", Middleware(srv))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
