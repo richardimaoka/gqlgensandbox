@@ -8,7 +8,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/richardimaoka/gqlgensandbox/graph/model"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 // CreateTodo is the resolver for the createTodo field.
@@ -18,8 +20,23 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	// log.Fatalf("fatalllfaltaltalltal")
-	return nil, fmt.Errorf("returned errorrorr")
+	// Print a formatted string
+	graphql.AddErrorf(ctx, "Error %d", 1)
+
+	// Pass an existing error out
+	graphql.AddError(ctx, gqlerror.Errorf("zzzzzt"))
+
+	// Or fully customize the error
+	graphql.AddError(ctx, &gqlerror.Error{
+		Path:    graphql.GetPath(ctx),
+		Message: "A descriptive error message",
+		Extensions: map[string]interface{}{
+			"code": "10-4",
+		},
+	})
+
+	// And you can still return an error if you need
+	return nil, gqlerror.Errorf("BOOM! Headshot")
 }
 
 // Mutation returns MutationResolver implementation.
